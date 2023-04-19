@@ -13,8 +13,8 @@ import { JwtStrategy } from './strategies/jwt.strategy';
     PassportModule,
     JwtModule.register({
       global: true,
-      secret: 'This is a secret: move to env',
-      signOptions: { expiresIn: '7d' },
+      secret: process.env.JWT_SECRET,
+      signOptions: { expiresIn: process.env.JWT_EXPIRES_IN },
     }),
   ],
   controllers: [AuthController],

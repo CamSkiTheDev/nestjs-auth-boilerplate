@@ -4,12 +4,12 @@ import { AppService } from './app.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
-    MongooseModule.forRoot(
-      'mongodb+srv://admin:GEgApsdjOX2pljbM@cluster0.hcodwph.mongodb.net/?retryWrites=true&w=majority',
-    ),
+    ConfigModule.forRoot(),
+    MongooseModule.forRoot(process.env.DATABASE_URI),
     AuthModule,
     UsersModule,
   ],

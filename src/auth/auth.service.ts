@@ -33,7 +33,7 @@ export class AuthService {
   async login(user: UserDocument): Promise<AuthToken> {
     const payload = { email: user.email, sub: user._id };
     return {
-      access_token: this.jwtService.sign(payload, { expiresIn: '7d' }),
+      access_token: this.genToken(payload),
     };
   }
 
@@ -46,7 +46,14 @@ export class AuthService {
 
     return {
       user,
-      access_token: this.jwtService.sign(payload, { expiresIn: '7d' }),
+      access_token: this.genToken(payload),
     };
+  }
+
+  genToken(payload: any) {
+    return this.jwtService.sign(payload, {
+      expiresIn: process.env.JWT_EXPIRES_IN,
+      secret: process.env.JWT_SECRET,
+    });
   }
 }
