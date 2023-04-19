@@ -15,6 +15,8 @@ export class AuthService {
   async validateUser(username: string, pass: string): Promise<any> {
     const user = await this.usersService.findOne(username);
 
+    if (!user) throw new UnauthorizedException('Invalid email/password combo.');
+
     if (!user.validatePassword(pass))
       throw new UnauthorizedException('Invalid email/password combo.');
 
@@ -23,6 +25,8 @@ export class AuthService {
 
   async validateJwt(id: string, email: string): Promise<any> {
     const user = await this.usersService.findOne(email);
+
+    if (!user) throw new UnauthorizedException('Invalid Token');
 
     if (!(user._id.toString() === id))
       throw new UnauthorizedException('Invalid Token');
