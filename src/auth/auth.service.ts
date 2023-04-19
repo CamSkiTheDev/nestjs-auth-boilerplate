@@ -56,4 +56,28 @@ export class AuthService {
       secret: process.env.JWT_SECRET,
     });
   }
+
+  async googleLogin(
+    profile: any,
+    accessToken: string,
+    refreshToken: string,
+  ): Promise<UserDocument> {
+    let user = await this.usersService.findOne(profile.emails[0].value);
+
+    if (!user)
+      user = await this.usersService.create({
+        username: profile.displayName,
+        email: profile.emails[0].value,
+        password: accessToken,
+        providers: [
+          {
+            name: 'google',
+            refreshToken,
+            accessToken,
+          },
+        ],
+      });
+
+    return user;
+  }
 }

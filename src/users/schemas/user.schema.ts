@@ -5,9 +5,21 @@ import { Role } from 'src/auth/enums/role.enum';
 
 export type UserDocument = HydratedDocument<User & UserSchemaMethods>;
 
-@Schema()
+@Schema({ _id: false })
+export class Provider {
+  @Prop({ required: true })
+  name: string;
+
+  @Prop()
+  accessToken: string;
+
+  @Prop()
+  refreshToken: string;
+}
+
+@Schema({ timestamps: true })
 export class User {
-  @Prop({ required: true, unique: true })
+  @Prop({ required: true })
   username: string;
 
   @Prop({ required: true, unique: true })
@@ -18,6 +30,9 @@ export class User {
 
   @Prop({ required: true, default: Role.User })
   roles: Role[];
+
+  @Prop({ default: [] })
+  providers: Provider[];
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
